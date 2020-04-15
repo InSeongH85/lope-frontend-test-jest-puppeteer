@@ -149,12 +149,6 @@ describe(
   timeout
 )
 
-function delay( timeout ) {
-  return new Promise(( resolve ) => {
-    setTimeout( resolve, timeout );
-  });
-}
-
 /**
  * INPUT SELECTOR 에 typeText 를 입력한다.
  * @param {puppeteer#Page} page 
