@@ -1,6 +1,6 @@
 const timeout = 10000
 const fs = require('fs');
-const SCREENSHOT_PATH = './screenshot';
+const SCREENSHOT_PATH = './screenshot/patManagement';
 let screenshotCnt = 1;
 
 describe(
@@ -19,12 +19,12 @@ describe(
 
     it('이용자정보관리 페이지 이동', async () => {
       await moveMenuOfTwoDepth(page, "이용자관리", "/pat/management")
-      await page.waitFor(1000)
       const PAGE_NAME="span.md-subheader-content > div.ikc-toolbar > span.ikc-pagename"
-      const pageName = await page.waitFor(PAGE_NAME)
+      const pageName = await page.waitForSelector(PAGE_NAME)
       const name = await page.evaluate( pageName => pageName.innerText, pageName)
       expect(name).toEqual("이용자정보관리");
       await takeFullScreenshot(page, "이용자정보관리")
+      
     })
 
     it('이용자정보 조회', async () => {
@@ -33,13 +33,12 @@ describe(
       const USERLIST_SELECTOR = "md-content.ikc-listwrap > md-content.ikc-list-group > section.ikc-guide > div.ikc-list > div.ikc-list-item > a.ikc-list-item-title"
       const USER_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > h2 > div.md-subheader-inner > span > div.ikc-toolbar > h2.ikc-main-toolbar-header > strong"
 
-      await page.waitFor(500)
       await page.click(INQUIRY_SELECTOR)
-      await page.type(INQUIRY_SELECTOR, "아이네크", {delay: 100})
+      await page.type(INQUIRY_SELECTOR, "아이네크", {delay: 50})
       await page.click(SUBMIT_SELECTOR)
       await page.waitFor(1000)
       await page.click(USERLIST_SELECTOR)
-      await page.waitFor(1000)
+      await page.waitFor(500)
       const userName = await page.waitFor(USER_SELECTOR)
       const definedName = await page.evaluate( info => info.innerText, userName)
       await page.waitFor(1000)
@@ -58,11 +57,11 @@ describe(
       const MOBILE_COMPARE_INFO = "div.ikc-layout-main.open-side > md-content > section > header > div.ikc-main-moreinfo.ikc-userinfo-img > ul > li > span > strong[ng-bind='patron.mobilePhoneNo"
 
       await page.click(EDIT_BUTTON)
-      await page.waitFor(1000)
+      await page.waitFor(500)
       const isNotHidden = await page.$eval(CHECK_MODAL, ele => ele.parentElement.style.display !== "none");
       // 모달이 표현되었는지 여부확인
       expect(isNotHidden).toEqual(true)
-      page.waitFor(1000)
+      await page.waitFor(500)
       // 핸드폰, EMAIL ELEMENT 존재 여부 확인하기
       // 핸드폰 , EMAIL 수정
       await typeTextAfterClearInput(page, MOBILE_INPUT, MOBILE_NO)
@@ -85,7 +84,7 @@ describe(
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
       expect(isNotHidden).toEqual(true)
 
-      await page.waitFor(200)
+      await page.waitFor(500)
       const gridHeaderLength = await getGridHeaderLength(page, "chargeList")
       expect(gridHeaderLength).toBeGreaterThan(1);
       await takeFullScreenshot(page, "대출중내역")
@@ -99,7 +98,7 @@ describe(
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
       expect(isNotHidden).toEqual(true)
 
-      await page.waitFor(200)
+      await page.waitFor(500)
       const gridHeaderLength = await getGridHeaderLength(page, "blockList")
       expect(gridHeaderLength).toBeGreaterThan(1);
       await takeFullScreenshot(page, "제재내역")
@@ -113,7 +112,7 @@ describe(
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
       expect(isNotHidden).toEqual(true)
 
-      await page.waitFor(200)
+      await page.waitFor(500)
       const gridHeaderLength = await getGridHeaderLength(page, "noShowList")
       expect(gridHeaderLength).toBeGreaterThan(1);
       await takeFullScreenshot(page, "부도이력")
@@ -127,7 +126,7 @@ describe(
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
       expect(isNotHidden).toEqual(true)
 
-      await page.waitFor(200)
+      await page.waitFor(500)
       const gridHeaderLength = await getGridHeaderLength(page, "multiPatronTypeList")
       expect(gridHeaderLength).toBeGreaterThan(1);
       await takeFullScreenshot(page, "다중신분정보")
@@ -141,7 +140,7 @@ describe(
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
       expect(isNotHidden).toEqual(true)
 
-      await page.waitFor(200)
+      await page.waitFor(500)
       const gridHeaderLength = await getGridHeaderLength(page, "patronAdditionInfo")
       expect(gridHeaderLength).toBeGreaterThan(1);
       await takeFullScreenshot(page, "부가정보")
@@ -155,7 +154,7 @@ describe(
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
       expect(isNotHidden).toEqual(true)
 
-      await page.waitFor(200)
+      await page.waitFor(500)
       const gridHeaderLength = await getGridHeaderLength(page, "patronLog")
       expect(gridHeaderLength).toBeGreaterThan(1);
       await takeFullScreenshot(page, "열람\\변경이력")
@@ -171,8 +170,16 @@ describe(
  * @param string: childHref
  */
 async function moveMenuOfTwoDepth(page, parentLabel, childHref) {
-	await page.click('div.ikc-gnb-menus > div.ikc-gnb-item > ul > li > button[aria-label="' + parentLabel + '"]');
-	await page.click('div.ikc-gnb-menus > div.ikc-gnb-item > ul > li > ul > li > a[href="#' + childHref + '"]');
+  const PARENT_MENU = 'div.ikc-gnb-menus > div.ikc-gnb-item > ul > li > button[aria-label="' + parentLabel + '"]'
+  const CHILD_MENU = 'div.ikc-gnb-menus > div.ikc-gnb-item > ul > li > ul > li > a[href="#' + childHref + '"]'
+  await page.waitForSelector(PARENT_MENU);
+  await page.$eval(PARENT_MENU, elem => elem.click());
+  await page.waitFor(200);
+  const isShow = await page.$eval(PARENT_MENU, ele => ele.parentElement.classList.contains("ikc-active"));
+  expect(isShow).toEqual(true)
+  await page.waitForSelector(CHILD_MENU);
+  await page.$eval(CHILD_MENU, elem => elem.click());
+  await page.waitFor(1000);
 }
 
 /**
@@ -218,11 +225,13 @@ async function getNgIncludeHtml(page, targetTabstripSelector, infoHtmlSelector) 
  * @param {string} typeText
  */
 async function typeTextAfterClearInput(page, inputSelector, typeText) {
+  await page.waitForSelector(inputSelector);
   const elementHandle = await page.$(inputSelector);
   await elementHandle.click();
   await elementHandle.focus();
   // click three times to select all
   await elementHandle.click({clickCount: 3});
   await elementHandle.press('Backspace');
-  await elementHandle.type(typeText, {delay: 30});
+  await elementHandle.type(typeText, {delay: 50});
+  await page.waitFor(1000);
 }

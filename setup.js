@@ -23,12 +23,10 @@ module.exports = async function() {
   await page.setViewport({width: 1920, height: 1080})
   await page.goto('http://ulibrary.inek.kr/solars', {waitUntil: 'networkidle0'})
   await page.waitFor('input[name=userId]');
-  await page.type('input[name=userId]', USERID, {delay: 100});
-  await page.waitFor(500);
-  await page.type('input[name=password]', PASSWORD, {delay: 100});
-  await page.waitFor(500);
+  await page.type('input[name=userId]', USERID, {delay: 50});
+  await page.type('input[name=password]', PASSWORD, {delay: 50});
   await page.click('button[aria-label=로그인]');
-  await page.waitFor(3000);
+  await page.waitFor(2000);
   const loginFailedResult = await page.evaluate(() => {
     const LOGIN_FAILED_SELECTOR = "div.ikc-message-subject > span[ng-bind-html]"
     return document.querySelector(LOGIN_FAILED_SELECTOR).innerHTML;

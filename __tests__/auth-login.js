@@ -1,6 +1,6 @@
 const timeout = 10000
 const fs = require('fs');
-const SCREENSHOT_PATH = './screenshot';
+const SCREENSHOT_PATH = './screenshot/authLogin';
 let screenshotCnt = 1;
 
 describe(
