@@ -11,7 +11,12 @@ const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup')
 
 module.exports = async function() {
   console.log(chalk.green('Setup Puppeteer'))
-  const browser = await puppeteer.launch({ headless: true, defaultViewport: { width: 2000, height: 1600 } })
+  const browser = await puppeteer.launch({
+    headless: true,
+    devtools: false,
+    defaultViewport: { width: 2000, height: 1600 },
+    ignoreHTTPSErrors: true
+  })
   // This global is not available inside tests but only in global teardown
   global.__BROWSER_GLOBAL__ = browser
   // Instead, we expose the connection details via file system to be used in tests
@@ -34,5 +39,6 @@ module.exports = async function() {
   if (loginFailedResult.length > 0) {
     console.log(chalk.red(loginFailedResult));
   }
-  await page.close()
+  // page 는 열어놓은 채로 puppeteer 연결만 끊는다.
+  // global.__BROWSER_GLOBAL__.disconnect()
 }
