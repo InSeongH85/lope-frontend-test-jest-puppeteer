@@ -1,5 +1,5 @@
-const timeout = 10000
-const fs = require('fs');
+const timeout = 10000;
+const utils = require('../utils/test-utils');
 const SCREENSHOT_PATH = './screenshot/authLogin';
 let screenshotCnt = 1;
 
@@ -30,17 +30,8 @@ describe(
         return document.querySelector(USERNAME_SELECTOR).innerText;
       });
       expect(userName).not.toBeNull()
-      await takeFullScreenshot(page, "로그인_후")
+      await utils.takeFullScreenshot(page, screenshotCnt, SCREENSHOT_PATH, "로그인_후")
     })
   },
   timeout
 )
-
-/**
- * 스크린 샷을 찍는다.
- */
-async function takeFullScreenshot(page, fileName) {
-  await page.waitFor(1000)
-	await fs.promises.mkdir(SCREENSHOT_PATH, { recursive: true })
-	await page.screenshot({ path: SCREENSHOT_PATH + '/' + screenshotCnt++ + "_" + fileName + ".png", fullPage: true });
-}
