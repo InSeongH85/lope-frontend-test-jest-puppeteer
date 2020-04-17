@@ -78,7 +78,7 @@ describe(
 
     it('이용자정보관리 > 대출중내역 페이지가 보이는가', async() => {
       const INFO_HTML_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > div.k-tabstrip-wrapper > div[kendo-tab-strip] > div.k-state-active > div"
-      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-charge", INFO_HTML_SELECTOR)
+      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-charge")
       expect(infoHtml).toEqual(" 'modules/pat/management/views/st.detail.charge.tab.html' ")
 
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
@@ -92,7 +92,7 @@ describe(
 
     it('이용자정보관리 > 제재내역 페이지가 보이는가', async() => {
       const INFO_HTML_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > div.k-tabstrip-wrapper > div[kendo-tab-strip] > div.k-state-active > div"
-      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-block", INFO_HTML_SELECTOR)
+      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-block")
       expect(infoHtml).toEqual(" 'modules/pat/management/views/st.detail.block.tab.html' ")
 
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
@@ -106,7 +106,7 @@ describe(
 
     it('이용자정보관리 > 부도이력 페이지가 보이는가', async() => {
       const INFO_HTML_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > div.k-tabstrip-wrapper > div[kendo-tab-strip] > div.k-state-active > div"
-      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-noshow", INFO_HTML_SELECTOR)
+      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-noshow")
       expect(infoHtml).toEqual(" 'modules/pat/management/views/st.detail.noshow.tab.html' ")
 
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
@@ -120,7 +120,7 @@ describe(
 
     it('이용자정보관리 > 다중신분정보 페이지가 보이는가', async() => {
       const INFO_HTML_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > div.k-tabstrip-wrapper > div[kendo-tab-strip] > div.k-state-active > div"
-      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-multipatrontype", INFO_HTML_SELECTOR)
+      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-multipatrontype")
       expect(infoHtml).toEqual(" 'modules/pat/management/views/st.detail.multipatrontype.tab.html' ")
 
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
@@ -134,7 +134,7 @@ describe(
 
     it('이용자정보관리 > 부가정보 페이지가 보이는가', async() => {
       const INFO_HTML_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > div.k-tabstrip-wrapper > div[kendo-tab-strip] > div.k-state-active > div"
-      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-additioninfo", INFO_HTML_SELECTOR)
+      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-additioninfo")
       expect(infoHtml).toEqual(" 'modules/pat/management/views/st.detail.additioninfo.tab.html' ")
 
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");
@@ -148,7 +148,7 @@ describe(
 
     it('이용자정보관리 > 람/변경이력 페이지가 보이는가', async() => {
       const INFO_HTML_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > div.k-tabstrip-wrapper > div[kendo-tab-strip] > div.k-state-active > div"
-      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-patronlog", INFO_HTML_SELECTOR)
+      const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-patronlog")
       expect(infoHtml).toEqual(" 'modules/pat/management/views/st.detail.patronlog.tab.html' ")
 
       const isNotHidden = await page.$eval(INFO_HTML_SELECTOR, ele => ele.parentElement.style.display !== "none");

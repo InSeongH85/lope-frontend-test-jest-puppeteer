@@ -11,7 +11,7 @@ module.exports = {
   },
 
   /**
-   * 메뉴를 이동한다.
+   * 2Depth 메뉴를 이동한다.
    */
   moveMenuOfTwoDepth: async function (page, parentLabel, childHref) {
     const PARENT_MENU = 'div.ikc-gnb-menus > div.ikc-gnb-item > ul > li > button[aria-label="' + parentLabel + '"]'
@@ -24,6 +24,22 @@ module.exports = {
     await page.waitForSelector(CHILD_MENU);
     await page.$eval(CHILD_MENU, elem => elem.click());
     await page.waitFor(1000);
+  },
+  /**
+   * 3Depth 메뉴를 이동한다.
+   */
+  moveMenuOfThreeepth: async function (page, grandParentLabel, parentLabel, childLabel) {
+    const GRAND_PARENT_MENU = "//div[@class='ikc-gnb-menus']//div[@class='ikc-gnb-item']//ul//li//span[contains(text(), '" + grandParentLabel + "')]"
+    const PARENT_MENU = "//li[@class='ikc-active']//span[contains(text(), '" +parentLabel+ "')]"
+    const CHILD_MENU = '//div[@class="ikc-gnb-menus"]//div[@class="ikc-gnb-item"]//ul//li[@class="ikc-active"]//ul//li//a[contains(text(), "' + childLabel + '")]'
+    const grandParentMenu = await page.$x(GRAND_PARENT_MENU)
+    grandParentMenu.length > 0 ? await grandParentMenu[0].click() : new Error("GrandParent NotFound");
+    await page.waitFor(500)
+    const parentMenu = await page.$x(PARENT_MENU)
+    parentMenu.length > 0 ? await parentMenu[0].click() : new Error("ParentMenu NotFound");
+    await page.waitFor(500)
+    const childMenu = await page.$x(CHILD_MENU)
+    childMenu.length > 0 ? await childMenu[0].click() : new Error("ChildMenu NotFound");
   },
 
   /**
@@ -40,12 +56,13 @@ module.exports = {
   /**
    * ng-include 에 있는 html 을 들고온다.
    */
-  getNgIncludeHtml: async function (page, targetTabstripSelector, infoHtmlSelector) {
+  getNgIncludeHtml: async function (page, targetTabstripSelector) {
+    const INFO_HTML_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > div.k-tabstrip-wrapper > div[kendo-tab-strip] > div.k-state-active > div"
     let INFO_TABSTRIP = "div.ikc-layout-main.open-side > md-content > section > div.k-tabstrip-wrapper > div[kendo-tab-strip] > ul > li"
     INFO_TABSTRIP += targetTabstripSelector
     await page.click(INFO_TABSTRIP)
     await page.waitFor(200)
-    const infoHtmlName = await page.$(infoHtmlSelector)
+    const infoHtmlName = await page.$(INFO_HTML_SELECTOR)
     const infoHtml = await page.evaluate( info => info.getAttribute("ng-include") , infoHtmlName)
     return infoHtml
   },
