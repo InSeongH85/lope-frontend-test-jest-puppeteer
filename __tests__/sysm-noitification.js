@@ -11,18 +11,15 @@ describe(
       page = await global.__BROWSER__.newPage()
       await page.setViewport({width:1280 , height: 960});
       await page.goto('http://ulibrary.inek.kr/solars', {waitUntil: 'networkidle0'})
+      await utils.moveMenuOfThreeepth(page, "시스템관리", "알림발송", "수동발송")
     }, timeout)
-
-    afterAll(async () => {
-      await page.close()
-    })
 
     beforeEach(async() => {
       await page.waitFor(2000)
     })
 
-    it('수동발송 메뉴 이동', async() => {
-      await utils.moveMenuOfThreeepth(page, "시스템관리", "알림발송", "수동발송")
+    afterAll(async () => {
+      await page.close()
     })
 
     it("페이지의 타이틀이 '수동발송' 인지 확인한다.", async() => {
@@ -48,9 +45,16 @@ describe(
       expect(buttons.length).toBe(4)
     })
 
-    it("검색조건을 ID 로 선택한다.", async() => {
-      
-    })
+    // it("검색조건을 ID 로 선택한다.", async() => {
+    //   const INQUIRY_CONDITION = "//form[@name='inquiryForm']/div[@class='ikc-drop-down-list ikc-required']/span[@class='k-widget k-dropdown k-header k-invalid']"
+    //   const condition = await page.$x(INQUIRY_CONDITION)
+    //   condition.length > 0 ? condition[0].click() : new Error("Not Defined 조회조건")
+    //   const selectList = await page.$x("//div[@class='k-animation-container']/div[@class='k-list-container k-popup k-group k-reset ikc-inverse']/ul/li")
+    //   const idSelect = selectList.length > 0 ? await page.evaluate(ele => ele.innerText === 'ID', selectList[0]) : new Error("Not Defined SelectList 'ID'")
+    //   await page.$eval(idSelect, elem => elem.click());
+
+    //   await page.waitFor(5000)
+    // })
 
   },
   timeout

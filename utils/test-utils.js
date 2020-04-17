@@ -25,6 +25,7 @@ module.exports = {
     await page.$eval(CHILD_MENU, elem => elem.click());
     await page.waitFor(1000);
   },
+
   /**
    * 3Depth 메뉴를 이동한다.
    */

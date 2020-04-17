@@ -1,11 +1,12 @@
 {
   "private": true,
   "scripts": {
-    "test": "jest"
+    "test": "jest --testResultsProcessor='jest-stare'"
   },
   "devDependencies": {
     "chalk": "^2.4.2",
     "jest": "^25.3.0",
+    "jest-stare": "^2.0.0",
     "prettier": "^1.18.2",
     "puppeteer": "^2.1.1",
     "rimraf": "^2.6.3"
