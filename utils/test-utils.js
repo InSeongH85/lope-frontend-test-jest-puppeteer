@@ -41,6 +41,7 @@ module.exports = {
     await page.waitFor(500)
     const childMenu = await page.$x(CHILD_MENU)
     childMenu.length > 0 ? await childMenu[0].click() : new Error("ChildMenu NotFound");
+    await page.waitFor(500)
   },
 
   /**

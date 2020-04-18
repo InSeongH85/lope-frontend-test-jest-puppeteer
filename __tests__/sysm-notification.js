@@ -38,6 +38,9 @@ describe(
       const buttonTitle = buttons.length > 0 ? await page.evaluate(ele => ele.getAttribute("aria-label"), buttons[0]) : ""
       expect(buttonTitle).toBe("개별조회")
       buttons.length > 0 ? buttons[0].click() : new Error("Not Defined 개별조회");
+      await page.waitFor(500)
+      const addButton = await page.$x("//form[@name='inquiryForm']/div[@class='ikc-btnswrap']/div/button[@aria-label='추가']")
+      expect(addButton.length).toBe(1)
     })
 
     it("개별조회 페이지의 버튼이 4개 인지 확인한다.", async() => {
