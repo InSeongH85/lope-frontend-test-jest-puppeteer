@@ -49,13 +49,11 @@ describe(
     })
 
     // it("검색조건을 ID 로 선택한다.", async() => {
-    //   const INQUIRY_CONDITION = "//form[@name='inquiryForm']/div[@class='ikc-drop-down-list ikc-required']/span[@class='k-widget k-dropdown k-header k-invalid']"
-    //   const condition = await page.$x(INQUIRY_CONDITION)
+    //   const condition = await page.$x("//form[@name='inquiryForm']/div[@class='ikc-drop-down-list ikc-required']/span")
     //   condition.length > 0 ? condition[0].click() : new Error("Not Defined 조회조건")
-    //   const selectList = await page.$x("//div[@class='k-animation-container']/div[@class='k-list-container k-popup k-group k-reset ikc-inverse']/ul/li")
+    //   const selectList = await page.$x("//div[@class='k-animation-container']/div/ul[@role='listbox']/li")
     //   const idSelect = selectList.length > 0 ? await page.evaluate(ele => ele.innerText === 'ID', selectList[0]) : new Error("Not Defined SelectList 'ID'")
     //   await page.$eval(idSelect, elem => elem.click());
-
     //   await page.waitFor(5000)
     // })
 

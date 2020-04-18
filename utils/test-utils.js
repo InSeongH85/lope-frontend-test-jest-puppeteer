@@ -30,18 +30,22 @@ module.exports = {
    * 3Depth 메뉴를 이동한다.
    */
   moveMenuOfThreeepth: async function (page, grandParentLabel, parentLabel, childLabel) {
-    const GRAND_PARENT_MENU = "//div[@class='ikc-gnb-menus']//div[@class='ikc-gnb-item']//ul//li//span[contains(text(), '" + grandParentLabel + "')]"
-    const PARENT_MENU = "//li[@class='ikc-active']//span[contains(text(), '" +parentLabel+ "')]"
-    const CHILD_MENU = '//div[@class="ikc-gnb-menus"]//div[@class="ikc-gnb-item"]//ul//li[@class="ikc-active"]//ul//li//a[contains(text(), "' + childLabel + '")]'
-    const grandParentMenu = await page.$x(GRAND_PARENT_MENU)
-    grandParentMenu.length > 0 ? await grandParentMenu[0].click() : new Error("GrandParent NotFound");
-    await page.waitFor(500)
-    const parentMenu = await page.$x(PARENT_MENU)
-    parentMenu.length > 0 ? await parentMenu[0].click() : new Error("ParentMenu NotFound");
-    await page.waitFor(500)
-    const childMenu = await page.$x(CHILD_MENU)
-    childMenu.length > 0 ? await childMenu[0].click() : new Error("ChildMenu NotFound");
-    await page.waitFor(500)
+    const GRAND_PARENT_MENU = "//div[@class='ikc-gnb-menus']/div[@class='ikc-gnb-item']/ul/li/button[@aria-label='" + grandParentLabel + "'][1]"
+    const PARENT_MENU = "//div[@class='ikc-gnb-menus']/div[@class='ikc-gnb-item']/ul/li/ul[@class='ikc-rtl']/li/span[@class='ikc-span-submenu'][contains(text(), '" + parentLabel + "')][1]"
+    const CHILD_MENU = '//div[@class="ikc-gnb-menus"]/div[@class="ikc-gnb-item"]/ul/li[@class="ikc-active"]/ul/li/ul/li/a[contains(text(), "' + childLabel + '")][1]'
+    await page.waitForXPath(GRAND_PARENT_MENU).then((grandParentMenuHandle) => {
+      grandParentMenuHandle.evaluate(ele => ele.click())
+    }).catch((error) => console.error("Move Three Menu Error ! " + error))
+
+    await page.waitForXPath(PARENT_MENU).then((parentMenuHandle) => {
+      parentMenuHandle.evaluate(ele => ele.click())
+    }).catch((error) => console.error("Move Three Menu Error ! " + error))
+
+    await page.waitForXPath(CHILD_MENU).then((childMenuHandle) => {
+      childMenuHandle.evaluate(ele => ele.click())
+    }).catch((error) => console.error("Move Three Menu Error ! " + error))
+
+    await page.waitFor(1000)
   },
 
   /**
