@@ -38,7 +38,7 @@ describe(
       const buttonTitle = buttons.length > 0 ? await page.evaluate(ele => ele.getAttribute("aria-label"), buttons[0]) : ""
       expect(buttonTitle).toBe("개별조회")
       buttons.length > 0 ? buttons[0].click() : new Error("Not Defined 개별조회");
-      await page.waitFor(500)
+      await page.waitForNavigation();
       const addButton = await page.$x("//form[@name='inquiryForm']/div[@class='ikc-btnswrap']/div/button[@aria-label='추가']")
       expect(addButton.length).toBe(1)
     })
@@ -48,14 +48,31 @@ describe(
       expect(buttons.length).toBe(4)
     })
 
-    // it("검색조건을 ID 로 선택한다.", async() => {
-    //   const condition = await page.$x("//form[@name='inquiryForm']/div[@class='ikc-drop-down-list ikc-required']/span")
-    //   condition.length > 0 ? condition[0].click() : new Error("Not Defined 조회조건")
-    //   const selectList = await page.$x("//div[@class='k-animation-container']/div/ul[@role='listbox']/li")
-    //   const idSelect = selectList.length > 0 ? await page.evaluate(ele => ele.innerText === 'ID', selectList[0]) : new Error("Not Defined SelectList 'ID'")
-    //   await page.$eval(idSelect, elem => elem.click());
-    //   await page.waitFor(5000)
-    // })
+    it("검색조건을 ID 로 선택한다.", async() => {
+      const CONDITION_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-drop-down-list ikc-required']/span"
+      await page.waitForXPath(CONDITION_XPATH).then((conditionHandle) => {
+        conditionHandle.evaluate(ele => ele.click())
+      }).catch((error) => console.error("Error ConditionList Click  ! " + error))
+      const CONDITION_ID_XPATH = "//div[@class='k-animation-container']/div/ul[@role='listbox']/li[contains(text(), 'ID')]"
+      await page.waitForXPath(CONDITION_ID_XPATH).then((idCondition) => {
+        idCondition.evaluate(ele => ele.click())
+      }).catch((error) => console.error("Error ID Condition Click : " + error))
+      const CONDITION_TEXT_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-textbox ikc-required']/input[@name='text'][@ng-model='inquiryManagement.text']"
+      await page.waitForXPath(CONDITION_TEXT_XPATH).then((textCondition) => {
+        textCondition.evaluate(ele => ele.click())
+        textCondition.evaluate(ele => ele.value = 'inek4gut')
+      })
+      const ADD_BUTTON_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-btnswrap']/div/button[@type='submit'][@aria-label='추가']"
+      await page.waitForXPath(ADD_BUTTON_XPATH).then((addButton) => {
+        addButton.evaluate(ele => ele.click())
+      })
+
+      await page.waitFor(1000)
+      const GRID_DATA_XPATH = "//div[@kendo-grid][@data-role='grid']/div[@class='k-grid-content']/table[@role='grid']/tbody[@role='rowgroup']/tr/td"
+      const gridTd = await page.$x(GRID_DATA_XPATH)
+      console.log("gridTd .length : " + gridTd.length);
+      expect(gridTd.length).not.toBe(1)
+    })
 
   },
   timeout
