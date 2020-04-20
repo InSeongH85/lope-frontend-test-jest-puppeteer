@@ -49,28 +49,46 @@ describe(
     })
 
     it("검색조건을 ID 로 선택한다.", async() => {
+      // 검색 조건을 클릭
       const CONDITION_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-drop-down-list ikc-required']/span"
       await page.waitForXPath(CONDITION_XPATH).then((conditionHandle) => {
         conditionHandle.evaluate(ele => ele.click())
       }).catch((error) => console.error("Error ConditionList Click  ! " + error))
+
+      // ID 인 것을 클릭
       const CONDITION_ID_XPATH = "//div[@class='k-animation-container']/div/ul[@role='listbox']/li[contains(text(), 'ID')]"
+      // const CONDITION_ID_XPATH = "//div[@class='k-animation-container']/div/div[@class='k-list-optionlabel k-state-selected k-state-focused']"
       await page.waitForXPath(CONDITION_ID_XPATH).then((idCondition) => {
         idCondition.evaluate(ele => ele.click())
       }).catch((error) => console.error("Error ID Condition Click : " + error))
+
+      // Invalid Message 가 보이는지 여부
+      const CONDITION_INVALID_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-drop-down-list ikc-required']/label/span[@data-for='searchRequirement']"
+      const invalidDisplay = await page.$x(CONDITION_INVALID_XPATH)
+      const displayCss = await page.evaluate(ele => ele.style.display, invalidDisplay[0])
+      // 검색 조건이 클릭 조차 되지 않았을 시 
+      expect(displayCss).not.toBeUndefined()
+      expect(displayCss.lenth).not.toEqual(0)
+      // 검색 조건이 선택 되지 않았을 시 (검색조건을 선택하여 주십시오)
+      expect(displayCss).not.toEqual("block")
+
       const CONDITION_TEXT_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-textbox ikc-required']/input[@name='text'][@ng-model='inquiryManagement.text']"
       await page.waitForXPath(CONDITION_TEXT_XPATH).then((textCondition) => {
         textCondition.evaluate(ele => ele.click())
-        textCondition.evaluate(ele => ele.value = 'inek4gut')
       })
+      // 검색할 ID 넣기
+      await page.type("input[ng-model='inquiryManagement.text']", 'inek4gut', {delay: 50});
+      
       const ADD_BUTTON_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-btnswrap']/div/button[@type='submit'][@aria-label='추가']"
       await page.waitForXPath(ADD_BUTTON_XPATH).then((addButton) => {
         addButton.evaluate(ele => ele.click())
       })
 
+      // GRID 데이터 체크
       await page.waitFor(1000)
       const GRID_DATA_XPATH = "//div[@kendo-grid][@data-role='grid']/div[@class='k-grid-content']/table[@role='grid']/tbody[@role='rowgroup']/tr/td"
       const gridTd = await page.$x(GRID_DATA_XPATH)
-      console.log("gridTd .length : " + gridTd.length);
+      //검색 결과가 없을 시에는 1개 나온다.
       expect(gridTd.length).not.toBe(1)
     })
 
