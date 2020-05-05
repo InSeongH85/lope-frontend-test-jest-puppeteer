@@ -9,7 +9,7 @@ describe(
     let page
     beforeAll(async () => {
       page = await global.__BROWSER__.newPage()
-      await page.setViewport({width:1280 , height: 960});
+      await page.setViewport({width:1920 , height: 1080});
       await page.goto('http://ulibrary.inek.kr/solars', {waitUntil: 'networkidle0'})
       await utils.moveMenuOfThreeepth(page, "시스템관리", "알림발송", "수동발송")
     }, timeout)
@@ -92,6 +92,29 @@ describe(
       expect(gridTd.length).not.toBe(1)
     })
 
+    it("조회된 ID 를 선택한다.", async() => {
+      const SELECT_CHECKBOX = "//div[@kendo-grid][@data-role='grid']/div[@class='k-grid-content']/table[@role='grid']/tbody[@role='rowgroup']/tr/td[@role='gridcell']/input[@type='checkbox'][@name='processingCheckBox']"
+      await page.waitForXPath(SELECT_CHECKBOX).then((checkBox) => {
+        checkBox.evaluate(ele => ele.click())
+      }).catch((error) => console.error("Error CHECKBOX Click : " + error))
+      const checkBox = await page.$x(SELECT_CHECKBOX);
+      const isChecked = await page.evaluate(checkB => checkB.checked, checkBox[0])
+      expect(isChecked).toEqual(true)
+
+      await page.waitFor(5000)
+    })
+
+    it("Ik-Toast 가 열렸을까 ?", async() => {
+      const SHOW_TOAST_BOX = "//div[@class='ikc-action-toast ikc-toast-show']";
+      const toastBox = await page.$x(SHOW_TOAST_BOX)
+      // 선택되었으면 ikc-toast-show / 선택되지 않았다면 ikc-toast-hide
+      expect(toastBox.length).toBe(1)
+      const SEND_BUTTON = "//div[@class='ikc-action-toast ikc-toast-show']/div/div/button[@type='button'][@class='md-warn md-button md-default-theme']"
+      await page.waitForXPath(SEND_BUTTON).then((sendButton) => {
+        sendButton.evaluate(ele => ele.click())
+      })
+      await page.waitFor(5000)
+    })
   },
   timeout
 )
