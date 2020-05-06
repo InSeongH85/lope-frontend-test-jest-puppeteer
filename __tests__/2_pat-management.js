@@ -1,6 +1,7 @@
 const timeout = 10000
 const fs = require('fs');
-const utils = require('../utils/test-utils')
+const utils = require('../utils/test-utils');
+const info = require('../utils/test-info');
 const SCREENSHOT_PATH = './screenshot/patManagement';
 let screenshotCnt = 1;
 
@@ -11,7 +12,7 @@ describe(
     beforeAll(async () => {
       page = await global.__BROWSER__.newPage()
       await page.setViewport({width:1920 , height: 1080});
-      await page.goto('http://ulibrary.inek.kr/solars', {waitUntil: 'networkidle0'})
+      await page.goto(info.URL, {waitUntil: 'networkidle0'})
     }, timeout)
 
     afterAll(async () => {
