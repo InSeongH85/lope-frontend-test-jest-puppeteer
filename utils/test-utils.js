@@ -45,7 +45,7 @@ module.exports = {
       childMenuHandle.evaluate(ele => ele.click())
     }).catch((error) => console.error("Move Three Menu Error ! " + error))
 
-    await page.waitFor(1000)
+    await page.waitFor(1000);
   },
 
   /**
