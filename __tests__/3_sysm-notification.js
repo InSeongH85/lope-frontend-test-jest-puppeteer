@@ -9,13 +9,13 @@ describe(
     let page
     beforeAll(async () => {
       page = await global.__BROWSER__.newPage()
-      await page.setViewport({width:1920 , height: 1080});
+      await page.setViewport({width:1600 , height: 1080});
       await page.goto('http://ulibrary.inek.kr/solars', {waitUntil: 'networkidle0'})
       await utils.moveMenuOfThreeepth(page, "시스템관리", "알림발송", "수동발송")
     }, timeout)
 
     beforeEach(async() => {
-      await page.waitFor(2000)
+      await page.waitFor(1000)
     })
 
     afterAll(async () => {
@@ -66,7 +66,7 @@ describe(
       const CONDITION_INVALID_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-drop-down-list ikc-required']/label/span[@data-for='searchRequirement']"
       const invalidDisplay = await page.$x(CONDITION_INVALID_XPATH)
       const displayCss = await page.evaluate(ele => ele.style.display, invalidDisplay[0])
-      // 검색 조건이 클릭 조차 되지 않았을 시 
+      // 검색 조건이 클릭 조차 되지 않았을 시
       expect(displayCss).not.toBeUndefined()
       expect(displayCss.lenth).not.toEqual(0)
       // 검색 조건이 선택 되지 않았을 시 (검색조건을 선택하여 주십시오)
@@ -78,7 +78,7 @@ describe(
       })
       // 검색할 ID 넣기
       await page.type("input[ng-model='inquiryManagement.text']", 'inek4gut', {delay: 50});
-      
+
       const ADD_BUTTON_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-btnswrap']/div/button[@type='submit'][@aria-label='추가']"
       await page.waitForXPath(ADD_BUTTON_XPATH).then((addButton) => {
         addButton.evaluate(ele => ele.click())

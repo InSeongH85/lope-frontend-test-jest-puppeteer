@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "test": "jest --testResultsProcessor='jest-stare'"
+    "test": "jest --runInBand"
   },
   "devDependencies": {
     "chalk": "^2.4.2",
