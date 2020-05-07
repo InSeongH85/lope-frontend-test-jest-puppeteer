@@ -81,8 +81,9 @@ describe(
         textCondition.evaluate(ele => ele.click());
       })
       // 검색할 ID 넣기
-      await page.type("input[ng-model='inquiryManagement.text']", 'inek4gut', {delay: 50});
-
+      const SEARCH_TEXT_INPUT = "input[ng-model='inquiryManagement.text']";
+      // await page.type("input[ng-model='inquiryManagement.text']", 'inek4gut', {delay: 50});
+      await utils.typeTextAfterClearInput(page, SEARCH_TEXT_INPUT, info.SYSM_NOTIFICATION_SEND_USER_ID)
       const ADD_BUTTON_XPATH = "//form[@name='inquiryForm']/div[@class='ikc-btnswrap']/div/button[@type='submit'][@aria-label='추가']";
       await page.waitForXPath(ADD_BUTTON_XPATH).then((addButton) => {
         addButton.evaluate(ele => ele.click());

@@ -1,5 +1,6 @@
 module.exports = {
-  URL: "http://ulibrary.inek.kr/solars",
+  URL: "http://lope.inek.co.kr/solars-pc",
   USERID : 'id4solars',
-  PASSWORD : 'djfwnrzh23!'
+  PASSWORD : 'djfwnrzh23!',
+  SYSM_NOTIFICATION_SEND_USER_ID : 'id4solars'
 };
