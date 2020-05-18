@@ -147,7 +147,7 @@ describe(
       screenshotCnt = await utils.takeFullScreenshot(page, screenshotCnt, SCREENSHOT_PATH, "부가정보")
     })
 
-    it('이용자정보관리 > 람/변경이력 페이지가 보이는가', async() => {
+    it('이용자정보관리 > 열람/변경이력 페이지가 보이는가', async() => {
       const INFO_HTML_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > div.k-tabstrip-wrapper > div[kendo-tab-strip] > div.k-state-active > div"
       const infoHtml = await utils.getNgIncludeHtml(page, ".ik-tab-patronlog")
       expect(infoHtml).toEqual(" 'modules/pat/management/views/st.detail.patronlog.tab.html' ")
