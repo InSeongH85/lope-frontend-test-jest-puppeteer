@@ -48,8 +48,6 @@ describe(
     })
 
     it('이용자정보관리 > 이용자정보 편집 - E-MAIL, PHONE_NO', async() => {
-      const MOBILE_NO = "01022223333"
-      const EMAIL = "admin@inek.co.kr"
       const EDIT_BUTTON = "span.md-subheader-content > div.ikc-toolbar > div > button > i.fa.fa-pencil"
       const CHECK_MODAL = "div.k-widget > div.ikc-modal-window"
       const MOBILE_INPUT = "form[name='editForm'] > div.ikc-textbox > input[name='mobilePhoneNo']"
@@ -65,8 +63,8 @@ describe(
       await page.waitFor(500)
       // 핸드폰, EMAIL ELEMENT 존재 여부 확인하기
       // 핸드폰 , EMAIL 수정
-      await utils.typeTextAfterClearInput(page, MOBILE_INPUT, MOBILE_NO)
-      await utils.typeTextAfterClearInput(page, EMAIL_INPUT, EMAIL)
+      await utils.typeTextAfterClearInput(page, MOBILE_INPUT, info.CHANGE_MOBILE_PHONE)
+      await utils.typeTextAfterClearInput(page, EMAIL_INPUT, info.CHANGE_EMAIL)
       await page.click(SAVE_BUTTON)
       await page.waitFor(1000)
       // 핸드폰번호가 변경되었는지 확인한다.
