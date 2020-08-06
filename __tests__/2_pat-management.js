@@ -53,7 +53,7 @@ describe(
       const MOBILE_INPUT = "form[name='editForm'] > div.ikc-textbox > input[name='mobilePhoneNo']"
       const EMAIL_INPUT = "form[name='editForm'] > div.ikc-textbox > input[name='email']"
       const SAVE_BUTTON = "form[name='editForm'] > div[layout='row'] > div > button[type='submit']"
-      const MOBILE_COMPARE_INFO = "div.ikc-layout-main.open-side > md-content > section > header > div.ikc-main-moreinfo.ikc-userinfo-img > ul > li > span > strong[ng-bind='patron.mobilePhoneNo"
+      const MOBILE_COMPARE_INFO = "div.ikc-layout-main.open-side > md-content > section > header > div.ikc-main-moreinfo.ikc-userinfo-img > ul > li > span > strong[ng-bind='patron.mobilePhoneNo']"
 
       await page.click(EDIT_BUTTON)
       await page.waitFor(500)
@@ -71,7 +71,9 @@ describe(
       // TODO EMAIL 은 SELECTOR 을 어찌 써야지...?
       const mobileCompareInfo = await page.waitFor(MOBILE_COMPARE_INFO)
       const afterMobile = await page.evaluate(info => info.innerText, mobileCompareInfo)
-      expect(afterMobile).toEqual(MOBILE_NO)
+      console.log("AfterMobile : " + afterMobile);
+      console.log("info.CHANGE_MOBILE_PHONE : " + info.CHANGE_MOBILE_PHONE);
+      expect(afterMobile).toEqual(info.CHANGE_MOBILE_PHONE)
       screenshotCnt = await utils.takeFullScreenshot(page, screenshotCnt, SCREENSHOT_PATH, "이용자편집")
     })
 
