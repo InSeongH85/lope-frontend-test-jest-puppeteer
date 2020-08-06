@@ -50,12 +50,14 @@ describe(
         searchButton.evaluate(ele => ele.click());
       });
 
-      const SEARCH_LIST = $x("//section[@class='ikc-guide ikc-guide-closed']/div/div[@class='ikc-list-item']")[0].innerText;
+      await page.waitFor(2000)
+      // 조회 후 "조회된 결과가 없습니다." 부분이 가려져 있는지 확인.
+      const SEARCH_LIST = "//section[@class='ikc-guide ikc-guide-closed']/div[@aria-hidden]"
+      const targetList = await page.$x(SEARCH_LIST);
+      const isAriaHidden = targetList.length > 0 ? await page.evaluate(ele => ele.getAttribute("aria-hidden"), targetList[0]) : "false";
+      expect(isAriaHidden).toBe("true")
       screenshotCnt = await utils.takeFullScreenshot(page, screenshotCnt, SCREENSHOT_PATH, "대출반납 화면에서 이용자 조회");
-      await page.waitFor(3000);
-
-    }) 
-
+    })
   },
   timeout
 )
