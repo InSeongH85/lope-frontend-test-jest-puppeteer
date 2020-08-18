@@ -149,6 +149,61 @@ describe(
       screenshotCnt = await utils.takeFullScreenshot(page, screenshotCnt, SCREENSHOT_PATH, "수동발송 완료");
     })
 
+    it('이용자정보관리 페이지 이동', async () => {
+      await utils.moveMenuOfTwoDepth(page, "이용자관리", "/pat/management")
+      const PAGE_NAME="span.md-subheader-content > div.ikc-toolbar > span.ikc-pagename"
+      const pageName = await page.waitForSelector(PAGE_NAME)
+      const name = await page.evaluate( pageName => pageName.innerText, pageName)
+      expect(name).toEqual("이용자정보관리");
+      screenshotCnt = await utils.takeFullScreenshot(page, screenshotCnt, SCREENSHOT_PATH, "이용자정보관리-원복")
+    })
+
+    it('이용자정보 조회-원복', async () => {
+      const INQUIRY_SELECTOR = "form[name='sideInquiryForm'] > div.ikc-textbox.ikc-required > input[name='searchWord']"
+      const SUBMIT_SELECTOR = "form[name='sideInquiryForm'] > div.ikc-btnswrap > div > button[type='submit']"
+      const USERLIST_SELECTOR = "md-content.ikc-listwrap > md-content.ikc-list-group > section.ikc-guide > div.ikc-list > div.ikc-list-item > a.ikc-list-item-title"
+      const USER_SELECTOR = "div.ikc-layout-main.open-side > md-content > section > h2 > div.md-subheader-inner > span > div.ikc-toolbar > h2.ikc-main-toolbar-header > strong"
+
+      await page.click(INQUIRY_SELECTOR)
+      await page.type(INQUIRY_SELECTOR, "아이네크", {delay: 50})
+      await page.click(SUBMIT_SELECTOR)
+      await page.waitFor(1000)
+      await page.click(USERLIST_SELECTOR)
+      await page.waitFor(500)
+      const userName = await page.waitFor(USER_SELECTOR)
+      const definedName = await page.evaluate( info => info.innerText, userName)
+      await page.waitFor(1000)
+      expect(definedName).not.toBeNull()
+      screenshotCnt = await utils.takeFullScreenshot(page, screenshotCnt, SCREENSHOT_PATH, "이용자조회-원복")
+    })
+
+    it('이용자정보관리 > 이용자정보 편집 - E-MAIL, PHONE_NO :: 테스트를 위해 변경했던 정보 원복', async() => {
+      const EDIT_BUTTON = "span.md-subheader-content > div.ikc-toolbar > div > button > i.fa.fa-pencil"
+      const CHECK_MODAL = "div.k-widget > div.ikc-modal-window"
+      const MOBILE_INPUT = "form[name='editForm'] > div.ikc-textbox > input[name='mobilePhoneNo']"
+      const EMAIL_INPUT = "form[name='editForm'] > div.ikc-textbox > input[name='email']"
+      const SAVE_BUTTON = "form[name='editForm'] > div[layout='row'] > div > button[type='submit']"
+      const MOBILE_COMPARE_INFO = "div.ikc-layout-main.open-side > md-content > section > header > div.ikc-main-moreinfo.ikc-userinfo-img > ul > li > span > strong[ng-bind='patron.mobilePhoneNo']"
+
+      await page.click(EDIT_BUTTON)
+      await page.waitFor(500)
+      const isNotHidden = await page.$eval(CHECK_MODAL, ele => ele.parentElement.style.display !== "none");
+      // 모달이 표현되었는지 여부확인
+      expect(isNotHidden).toEqual(true)
+      await page.waitFor(500)
+      // 핸드폰, EMAIL ELEMENT 존재 여부 확인하기
+      // 핸드폰 , EMAIL 수정
+      await utils.typeTextAfterClearInput(page, MOBILE_INPUT, info.NOT_MEANING_MOBILE_PHONE)
+      await utils.typeTextAfterClearInput(page, EMAIL_INPUT, info.NOT_MEANING_EMAIL)
+      await page.click(SAVE_BUTTON)
+      await page.waitFor(1000)
+      // 핸드폰번호가 변경되었는지 확인한다.
+      // TODO EMAIL 은 SELECTOR 을 어찌 써야지...?
+      const mobileCompareInfo = await page.waitFor(MOBILE_COMPARE_INFO)
+      const afterMobile = await page.evaluate(info => info.innerText, mobileCompareInfo)
+      expect(afterMobile).toEqual(info.NOT_MEANING_MOBILE_PHONE)
+      screenshotCnt = await utils.takeFullScreenshot(page, screenshotCnt, SCREENSHOT_PATH, "이용자편집-원복")
+    })
   },
   timeout
 )
