@@ -71,8 +71,6 @@ describe(
       // TODO EMAIL 은 SELECTOR 을 어찌 써야지...?
       const mobileCompareInfo = await page.waitFor(MOBILE_COMPARE_INFO)
       const afterMobile = await page.evaluate(info => info.innerText, mobileCompareInfo)
-      console.log("AfterMobile : " + afterMobile);
-      console.log("info.CHANGE_MOBILE_PHONE : " + info.CHANGE_MOBILE_PHONE);
       expect(afterMobile).toEqual(info.CHANGE_MOBILE_PHONE)
       screenshotCnt = await utils.takeFullScreenshot(page, screenshotCnt, SCREENSHOT_PATH, "이용자편집")
     })
